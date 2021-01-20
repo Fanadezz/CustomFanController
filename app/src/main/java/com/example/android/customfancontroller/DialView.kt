@@ -48,4 +48,10 @@ class DialView @JvmOverloads constructor(
         typeface = Typeface.create("", Typeface.BOLD)
     }
 
+//called when view first appears and whenever the view size changes
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+    radius = (w.coerceAtMost(h) /2.0 * 0.8).toFloat()
+    }
 }
