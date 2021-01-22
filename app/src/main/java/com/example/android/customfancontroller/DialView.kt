@@ -16,6 +16,15 @@ private enum class FanSpeed(val label: Int) {
     LOW(R.string.fan_low),
     MEDIUM(R.string.fan_medium),
     HIGH(R.string.fan_high)
+
+    //fxn to change the current fan speed to the next speed
+
+    fun next () = when(this){
+
+        OFF  -> LOW
+        LOW -> MEDIUM
+        HIGH -> OFF
+    }
 }
 
 //constants for drawing dial indicators and labels
@@ -49,6 +58,9 @@ class DialView @JvmOverloads constructor(
     }
 
     //called when view first appears and whenever the view size changes
+
+    /*Override onSizeChanged to colculate, positions, dimensions and any other values related to the custom
+     view size instead of calculating them every time you draw*/
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
@@ -98,14 +110,14 @@ class DialView @JvmOverloads constructor(
         pointPosition.computeXYForSpeed(fanSpeed,markerRadius)
         paint.color = Color.BLACK
 
-        canvas?.drawCircle(pointPosition.x, pointPosition.y, markerRadius, paint)
+        canvas?.drawCircle(pointPosition.x, pointPosition.y, radius/12, paint)
 
 //draw Text Labels
         val labelRadius = radius + RADIUS_OFFSET_LABEL
         for (i in FanSpeed.values()){
 
             pointPosition.computeXYForSpeed(i,labelRadius)
-            val label = i.label.toString()
+            val label = resources.getString(i.label)
             canvas?.drawText(label, pointPosition.x, pointPosition.y, paint)
         }
 
