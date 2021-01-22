@@ -91,6 +91,17 @@ class DialView @JvmOverloads constructor(
 
         /*width and height properties are members of the View Superclasss and indicate the current
                 dimensions of the view*/
+
+
+        //draw indicator circle
+        val markerRadius = radius + RADIUS_OFFSET_INDICATOR
+        pointPosition.computeXYForSpeed(fanSpeed,markerRadius)
+        paint.color = Color.BLACK
+
+        canvas?.drawCircle(pointPosition.x, pointPosition.y, markerRadius, paint)
+
+
+        
     }
 }
 
