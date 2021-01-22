@@ -57,6 +57,12 @@ class DialView @JvmOverloads constructor(
         typeface = Typeface.create("", Typeface.BOLD)
     }
 
+
+    //make the custom view clickable
+
+    init {
+        isClickable = true
+    }
     //called when view first appears and whenever the view size changes
 
     /*Override onSizeChanged to colculate, positions, dimensions and any other values related to the custom
@@ -121,6 +127,26 @@ class DialView @JvmOverloads constructor(
             canvas?.drawText(label, pointPosition.x, pointPosition.y, paint)
         }
 
+    }
+
+    //perform Click implementation
+
+    override fun performClick(): Boolean {
+        /*super.performClick must happen first which enables accessibility events as well as calls to
+        OnClickListener*/
+    if (super.performClick()) return true
+
+
+
+
+        //increment speed of the fan
+        fanSpeed = fanSpeed.next()
+        contentDescription = resources.getString(fanSpeed.label)
+
+
+        /*invalidate() invalidates the entire view forcing a call toDraw to redraw the view*/
+        invalidate()
+        return true
     }
 }
 
