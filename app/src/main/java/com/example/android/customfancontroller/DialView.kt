@@ -100,8 +100,15 @@ class DialView @JvmOverloads constructor(
 
         canvas?.drawCircle(pointPosition.x, pointPosition.y, markerRadius, paint)
 
+//draw Text Labels
+        val labelRadius = radius + RADIUS_OFFSET_LABEL
+        for (i in FanSpeed.values()){
 
-        
+            pointPosition.computeXYForSpeed(i,labelRadius)
+            val label = i.label.toString()
+            canvas?.drawText(label, pointPosition.x, pointPosition.y, paint)
+        }
+
     }
 }
 
