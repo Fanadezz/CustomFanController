@@ -1,11 +1,11 @@
 package com.example.android.customfancontroller
 
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.PointF
-import android.graphics.Typeface
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 //Enum to represent the available fan speeds
@@ -48,10 +48,50 @@ class DialView @JvmOverloads constructor(
         typeface = Typeface.create("", Typeface.BOLD)
     }
 
-//called when view first appears and whenever the view size changes
+    //called when view first appears and whenever the view size changes
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-    radius = (w.coerceAtMost(h) /2.0 * 0.8).toFloat()
+        radius = (w.coerceAtMost(h) / 2.0 * 0.8).toFloat()
+    }
+
+
+    private fun PointF.computeXYForSpeed(pos: FanSpeed, radius: Float) {
+        //Math.PI hold a constant value of 3.142
+
+        //Angles are in radians
+        val startAngle = Math.PI * (9 / 8.0) ///200 degrees/ 3.5 Radians
+
+
+        //enum.ordinal returns the order of an enum instance
+        val angle = startAngle + pos.ordinal * (Math.PI / 4)
+
+        //width - width of the enclosing view, height - height of the enclosing view
+        this.x = (radius * cos(angle)).toFloat() + width / 2
+        this.y = (radius * sin(angle)).toFloat() + height / 2
+    }
+
+    //override onDraw() to render view on the screen
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+
+        //set color to gray if fan speed is off
+        paint.color = if(fanSpeed == FanSpeed.OFF) Color.GRAY else Color.GRAY
+
+        //draw a circle for the dial
+
+        //drawCircle(float cx, float cy, float radius, Paint paint)
+
+       /*the method uses the current view width and height to find the centre of the circle
+        then takes a radius and pain to draw the circle*/
+
+
+        canvas?.drawCircle((width/2).toFloat(), (height/2).toFloat(), radius, paint)
+
+        /*width and height properties are members of the View Superclasss and indicate the current
+                dimensions of the view*/
     }
 }
+
+
